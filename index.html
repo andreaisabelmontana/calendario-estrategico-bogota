@@ -1081,7 +1081,7 @@ let chartInstances = {};
 function eventosFiltrados() {
   return EVENTOS.filter(e =>
     (!filtros.anio || (e.anio || e.fecha.slice(0,4)) === filtros.anio) &&
-    (!filtros.tipo || e.tipo === filtros.tipo) &&
+    (!filtros.tipo || (filtros.tipo === "Participación CDRI" ? Boolean(e.anio) : e.tipo === filtros.tipo)) &&
     (!filtros.tema || e.tema === filtros.tema) &&
     (!filtros.region || e.region === filtros.region) &&
     (!filtros.prioridad || e.prioridad === filtros.prioridad) &&
@@ -1099,7 +1099,7 @@ function nombreMes(m) {
 }
 
 function inicializarFiltros() {
-  const tipos = [...new Set(EVENTOS.map(e => e.tipo))].sort();
+  const tipos = [...new Set([...EVENTOS.map(e => e.tipo), "Participación CDRI"])].sort();
   const temas = [...new Set(EVENTOS.map(e => e.tema).filter(Boolean))].sort();
   const regiones = [...new Set(EVENTOS.map(e => e.region).filter(Boolean))].sort();
   tipos.forEach(t => document.getElementById("f-tipo").innerHTML += `<option value="${t}">${t}</option>`);
